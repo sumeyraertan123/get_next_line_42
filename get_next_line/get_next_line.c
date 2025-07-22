@@ -1,29 +1,34 @@
 #include "get_next_line.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+char	*ft_strjoin(char *s1, char const *s2)
 {
+	char	*joined;
+	size_t	s1_len;
 	size_t	i;
-	size_t	j;
 
-	j = 0;
-	while (src[j] != '\0')
-		j++;
-	if (size == 0)
-		return (j);
+	s1_len = 0;
+	if (s1 != NULL)
+		s1_len = ft_strlen(s1);
+	joined = (char *)malloc(s1_len + ft_strlen(s2) + 1);
+	if (!joined)
+		return ((char *) NULL);
 	i = 0;
-	while ((i < size -1) && src[i] != '\0')
+	while (s1_len && s1[i])
 	{
-		dst[i] = src[i];
+		joined[i] = s1[i];
 		i++;
 	}
-	dst[i] = '\0';
-	return (j);
+	while (*s2)
+		joined[i++] = *s2++;
+	joined[i] = '\0';
+	free(s1);
+	return (joined);
 }
 
-static char	*ft_add_read_ones(int fd, char *read_ones)
+char	*ft_add_read_ones(int fd, char *read_ones)
 {
-	ssize_t	read_res;
 	char	*temp;
+	ssize_t	read_res;
 
 	temp = (char *)ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!temp)
@@ -31,10 +36,10 @@ static char	*ft_add_read_ones(int fd, char *read_ones)
 	while (ft_strchr(read_ones, '\n') == NULL)
 	{
 		read_res = read(fd, temp, BUFFER_SIZE);
-		if (read_res = -1)
+		if (read_res == -1)
 		{
-			free(read_ones);
 			free(temp);
+			free(read_ones);
 			return (NULL);
 		}
 		if (read_res == 0)
@@ -44,32 +49,32 @@ static char	*ft_add_read_ones(int fd, char *read_ones)
 		if (read_ones == NULL)
 			break;
 	}
-	free(temp);
-	return(read_ones);
+	free (temp);
+	return (read_ones);
 }
 
-static char	*ft_line(char *read_ones)
+char	*ft_line(char *read_ones)
 {
-	char	*chr_addr;
+	char	*addr;
 	char	*line;
 
-	chr_addr = ft_strchr(read_ones, '\n');
-	if (chr_addr == NULL)
+	addr = ft_strchr(read_ones, '\n');
+	if (addr == NULL)
 		return (ft_substr(read_ones, 0, ft_strlen(read_ones)));
-	line = ft_substr(read_ones, 0, chr_addr - read_ones + 1);
+	line = ft_substr(read_ones, 0, (addr - read_ones + 1));
 	return (line);
 }
 
-static	*ft_remained_ones(char *read_ones)
+char	*ft_remained_ones(char *read_ones)
 {
-	char	*orginal;
+	char	*original;
 	char	*new;
 
-	orginal = read_ones;
+	original = read_ones;
 	read_ones = ft_strchr(read_ones, '\n');
 	if (read_ones == NULL)
 	{
-		free(orginal);
+		free (original);
 		return (NULL);
 	}
 	read_ones++;
@@ -79,14 +84,14 @@ static	*ft_remained_ones(char *read_ones)
 	if (!new)
 		return (NULL);
 	ft_strlcpy(new, read_ones, ft_strlen(read_ones) + 1);
-	free(orginal);
+	free (original);
 	return (new);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*line;
 	static char	*read_ones;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -95,8 +100,8 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (ft_strlen(read_ones) == 0)
 	{
-		free(read_ones);
-		read_ones = NULL ;
+		free (read_ones);
+		read_ones = NULL;
 		return (NULL);
 	}
 	line = ft_line(read_ones);

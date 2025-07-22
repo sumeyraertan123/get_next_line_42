@@ -2,46 +2,17 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	if (s == NULL) // ek olarak bu kontrol eklendi
-		return (NULL);
+	if (s == NULL)
+    return (NULL);
 	while (*s)
 	{
-		if ((unsigned char)*s == (unsigned char)c)
-			return ((char *)s);
-		s++;
+    	if ((unsigned char)*s == (unsigned char)c)
+        	return ((char *)s);
+    	s++;
 	}
-	if ((char)c == '\0')
-		return ((char *)s);
+	if (c == '\0')
+    	return ((char *)s);
 	return (NULL);
-}
-
-char	*ft_strjoin(char *s1, char const *s2)
-{
-	char	*joined;
-	size_t	s1_len;
-	size_t	i;
-	char	*s1_addr;
-
-	s1_len = 0;
-	if (s1 != NULL)
-		s1_len = ft_strlen(s1);
-	joined = (char *)malloc(s1_len + ft_strlen(s2) + 1);
-	if (!joined)
-		return ((char *) NULL);
-	i = 0;
-	s1_addr = s1;
-	while (s1_len && *s1)
-	{
-		joined[i] = *s1;
-		i++;
-		s1++;
-	}
-	while (*s2)
-		joined[i++] = *s2++;
-	joined[i] = '\0';
-	if (s1_addr != NULL)
-		free(s1_addr);
-	return (joined);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -87,4 +58,24 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	while (n--)
 		*ptr++ = '\0';
 	return ((void *)ptr_addr);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	size_t	i;
+	size_t	j;
+
+	j = 0;
+	while (src[j] != '\0')
+		j++;
+	if (size == 0)
+		return (j);
+	i = 0;
+	while ((i < size -1) && src[i] != '\0')
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (j);
 }
