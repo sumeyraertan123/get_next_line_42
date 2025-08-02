@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sertan <sertan@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/23 15:22:31 by sertan            #+#    #+#             */
+/*   Updated: 2025/07/23 15:23:13 by sertan           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
-	
+
 	i = 0;
 	while (s[i] != '\0')
 		i++;
@@ -33,7 +45,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (!s)
 		return (NULL);
 	if (start >= ft_strlen(s))
-		return(ft_calloc(1, sizeof(char)));
+		return (ft_calloc(1, sizeof(char)));
 	new_len = ft_strlen(s + start);
 	if (new_len > len)
 		new_len = len;
@@ -67,7 +79,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	unsigned char	*src;
-	size_t					i;
+	size_t			i;
 	size_t			space;
 
 	space = nmemb * size;

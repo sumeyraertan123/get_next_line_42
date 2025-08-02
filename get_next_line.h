@@ -6,7 +6,7 @@
 /*   By: sertan <sertan@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 07:58:39 by sertan            #+#    #+#             */
-/*   Updated: 2025/07/23 13:27:23 by sertan           ###   ########.fr       */
+/*   Updated: 2025/07/23 15:21:31 by sertan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #  define BUFFER_SIZE 42
 # endif
 
-#include <unistd.h>
-#include <stdlib.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *s);

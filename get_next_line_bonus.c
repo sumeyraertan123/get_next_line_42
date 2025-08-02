@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sertan <sertan@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/23 07:58:27 by sertan            #+#    #+#             */
-/*   Updated: 2025/07/23 12:29:39 by sertan           ###   ########.fr       */
+/*   Created: 2025/07/23 15:13:51 by sertan            #+#    #+#             */
+/*   Updated: 2025/07/24 17:54:50 by sertan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strjoin(char *s1, char const *s2)
 {
@@ -23,22 +23,20 @@ char	*ft_strjoin(char *s1, char const *s2)
 		s1_len = ft_strlen(s1);
 	joined = (char *)ft_calloc((s1_len + ft_strlen(s2) + 1), sizeof(char));
 	if (!joined)
-		return ((char *)NULL);
+		return ((char *) NULL);
 	i = 0;
-	if (s1)
-		while (s1[i] && s1_len) // bu while'ı if (s1) şeklinde alma kontrolü yap!!
-		{
-			joined[i] = s1[i];
-			i++;
-		}
+	while (s1 && s1[i] && s1_len)
+	{
+		joined[i] = s1[i];
+		i++;
+	}
 	while (*s2)
 	{
 		joined[i] = *s2++;
 		i++;
 	}
 	joined[i] = '\0';
-	free(s1);
-	return (joined);
+	return (free(s1), joined);
 }
 
 char	*ft_add_read_ones(int fd, char *read_ones)
@@ -59,15 +57,16 @@ char	*ft_add_read_ones(int fd, char *read_ones)
 			return (NULL);
 		}	
 		if (read_res == 0)
-			break;
+			break ;
 		temp[read_res] = '\0';
 		read_ones = ft_strjoin(read_ones, temp);
 		if (read_ones == NULL)
-			break;
+			break ;
 	}
 	free (temp);
 	return (read_ones);
 }
+
 char	*ft_line(char *read_ones)
 {
 	char	*line;
@@ -107,21 +106,21 @@ char	*ft_remained_ones(char *read_ones)
 
 char	*get_next_line(int fd)
 {
-	static char	*read_ones;
-	char	*line;
+	static char	*read_ones[4096];
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	read_ones = ft_add_read_ones(fd, read_ones);
-	if (read_ones == NULL)
+	read_ones[fd] = ft_add_read_ones(fd, read_ones[fd]);
+	if (read_ones[fd] == NULL)
 		return (NULL);
-	if (ft_strlen(read_ones) == 0)
+	if (ft_strlen(read_ones[fd]) == 0)
 	{
-		free(read_ones);
-		read_ones = NULL;
+		free(read_ones[fd]);
+		read_ones[fd] = NULL;
 		return (NULL);
 	}
-	line = ft_line(read_ones);
-	read_ones = ft_remained_ones(read_ones);
+	line = ft_line(read_ones[fd]);
+	read_ones[fd] = ft_remained_ones(read_ones[fd]);
 	return (line);
 }
